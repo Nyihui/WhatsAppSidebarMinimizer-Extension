@@ -3,7 +3,7 @@
   "name": "WhatsApp Sidebar Minimizer",
   "version": "1.0.0",
   "author": "Nyihui",
-  "description": "A no-frills extension that simply hides the WhatsApp Web sidebar. Toggle with a click or the Alt + . shortcut.",
+  "description": "An extension that simply hides the WhatsApp Web sidebar. Toggle with a button click or (Alt + .) keyboard shortcut.",
   "permissions": [
     "storage"
   ],
