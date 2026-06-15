@@ -1,0 +1,38 @@
+/* --- Transitions for Smooth Minimize / Expand --- */
+div:has(> header[data-testid="chatlist-header"]):has(> div[id="side"]),
+div[data-testid="drawer-left"] {
+    transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+        flex-basis 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+        min-width 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* --- Hide Native Sidebar Panel when Minimized --- */
+.wa-chat-minimized div:has(> header[data-testid="chatlist-header"]):has(> div[id="side"]),
+.wa-chat-minimized div[data-testid="drawer-left"] {
+    border-inline-start-width: 0 !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    flex: 0 0 0 !important;
+    overflow: hidden !important;
+}
+
+
+/* --- Disable Transitions for Toggle Button to Prevent Fading/Flashing --- */
+#wa-sidebar-toggle-btn,
+#wa-sidebar-toggle-btn *,
+#wa-sidebar-toggle-btn-wrapper,
+#wa-sidebar-toggle-btn-wrapper * {
+    transition: none !important;
+}
+
+#wa-sidebar-toggle-btn {
+    background: transparent !important;
+}
+
+#wa-sidebar-toggle-btn:hover {
+    background: linear-gradient(rgba(194, 189, 184, 0.1), rgba(194, 189, 184, 0.1)) rgba(194, 189, 184, 0.15) !important;
+}
+
+.dark #wa-sidebar-toggle-btn:hover {
+    background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)) rgba(255, 255, 255, 0.1) !important;
+}
