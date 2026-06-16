@@ -1,14 +1,12 @@
 /* --- Transitions for Smooth Minimize / Expand --- */
-div:has(> header[data-testid="chatlist-header"]):has(> div[id="side"]),
-div[data-testid="drawer-left"] {
+.wa-js-target-minimizer {
     transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1),
         flex-basis 0.25s cubic-bezier(0.4, 0, 0.2, 1),
         min-width 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 /* --- Hide Native Sidebar Panel when Minimized --- */
-.wa-chat-minimized div:has(> header[data-testid="chatlist-header"]):has(> div[id="side"]),
-.wa-chat-minimized div[data-testid="drawer-left"] {
+.wa-chat-minimized .wa-js-target-minimizer {
     border-inline-start-width: 0 !important;
     width: 0 !important;
     min-width: 0 !important;

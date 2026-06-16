@@ -190,6 +190,10 @@ function init() {
     // Start looking for the header
     observer.observe(document.documentElement, { childList: true, subtree: true });
 
+    // Start looking for DOM target updates (Replaces CSS :has)
+    targetObserver.observe(document.body || document.documentElement, { childList: true, subtree: true });
+    applyJsTargets();
+
     // Handle theme changes efficiently (only update color)
     const themeObserver = new MutationObserver(() => {
         if (buttonElement) {
@@ -206,6 +210,92 @@ function init() {
         }
     });
 }
+
+// --- Custom Pipeline Engine (Replaces CSS :has) ---
+const MINIMIZER_TARGETS = [
+    // 'div[id="side"] | closest:div',
+    // 'div[data-testid="drawer-left"]'
+    'div | has:> header[data-testid="chatlist-header"] | has:> div[id="side"]',
+    'div[data-testid="drawer-left"]'
+];
+
+function evaluatePipeline(pipelineStr) {
+    const commands = pipelineStr.split('|').map(s => s.trim());
+    const baseSelector = commands.shift();
+    let results = [];
+
+    try {
+        const initialNodes = document.querySelectorAll(baseSelector);
+        initialNodes.forEach(node => {
+            let current = node;
+            let isValid = true;
+            let finalTargets = [current];
+
+            for (const cmd of commands) {
+                if (!current || !isValid) break;
+
+                const colonIdx = cmd.indexOf(':');
+                const action = colonIdx > -1 ? cmd.substring(0, colonIdx).trim() : cmd.trim();
+                const value = colonIdx > -1 ? cmd.substring(colonIdx + 1).trim() : '';
+
+                if (action === 'closest') {
+                    current = current.closest(value);
+                    finalTargets = [current];
+                } else if (action === 'up') {
+                    const steps = parseInt(value) || 1;
+                    for (let i = 0; i < steps; i++) {
+                        if (current) current = current.parentElement;
+                    }
+                    finalTargets = [current];
+                } else if (action === 'find') {
+                    let queryValue = value;
+                    if (queryValue.startsWith('>')) queryValue = `:scope ${queryValue}`;
+                    finalTargets = Array.from(current.querySelectorAll(queryValue));
+                } else if (action === 'has') {
+                    let queryValue = value;
+                    if (queryValue.startsWith('>')) queryValue = `:scope ${queryValue}`;
+                    if (!current.querySelector(queryValue)) isValid = false;
+                } else if (action === 'not-has') {
+                    let queryValue = value;
+                    if (queryValue.startsWith('>')) queryValue = `:scope ${queryValue}`;
+                    if (current.querySelector(queryValue)) isValid = false;
+                }
+            }
+
+            if (isValid && current && finalTargets.length > 0) {
+                results.push(...finalTargets.filter(t => t != null));
+            }
+        });
+    } catch (e) { }
+    return results;
+}
+
+function applyJsTargets() {
+    MINIMIZER_TARGETS.forEach(targetStr => {
+        const elements = evaluatePipeline(targetStr);
+        elements.forEach(el => {
+            if (!el.classList.contains('wa-js-target-minimizer')) {
+                el.classList.add('wa-js-target-minimizer');
+            }
+        });
+    });
+}
+
+function debounce(func, wait) {
+    let timeout;
+    return function (...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func(...args), wait);
+    };
+}
+
+const applyJsTargetsDebounced = debounce(applyJsTargets, 50);
+const targetObserver = new MutationObserver((mutations) => {
+    const hasElementChanges = mutations.some(m => m.addedNodes.length > 0 || m.removedNodes.length > 0);
+    if (hasElementChanges) {
+        applyJsTargetsDebounced();
+    }
+});
 
 // Setup after DOM is ready
 if (document.readyState === 'loading') {
