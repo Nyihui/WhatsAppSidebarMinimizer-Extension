@@ -5,7 +5,8 @@ let buttonElement = null;
 
 function getCLBColor() {
     const isDark = document.body?.classList.contains('dark') || document.documentElement.classList.contains('dark');
-    return isDark ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.6)';
+    const fallbackInactive = isDark ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.6)';
+    return `var(--WDS-content-deemphasized, ${fallbackInactive})`;
 }
 
 function getMinimizeSvg() {
@@ -62,7 +63,7 @@ function createTooltip() {
         'white-space:nowrap', 'pointer-events:none', 'z-index:2147483647',
         'opacity:0', 'display:flex', 'align-items:center',
         'transform:translateY(-50%) scale(1)', 'transform-origin:left center',
-        'opacity 0.1s cubic-bezier(0, 0, 0.2, 1)', 'font-family:inherit'
+        'transition:transform 0 cubic-bezier(0.4, 0, 0.2, 1), opacity 0 cubic-bezier(0.4, 0, 0.2, 1)', 'font-family:inherit'
     ].join(';');
     document.body.appendChild(tooltipElement);
 }
@@ -101,7 +102,9 @@ function injectNativeHeaderToggleButton() {
             'display:flex', 'align-items:center', 'justify-content:center',
             'width:40px', 'height:40px', 'border:none', 'border-radius:50%',
             'background:transparent', 'cursor:pointer', 'padding:0',
-            `color:${getCLBColor()}`, 'flex-shrink:0',
+            `color:${getCLBColor()}`,
+            'transition:background .15s, color .2s, opacity .15s, transform .15s cubic-bezier(0.4, 0, 0.2, 1)',
+            'flex-shrink:0',
         ].join(';');
 
         const parser = new DOMParser();
@@ -131,8 +134,14 @@ function injectNativeHeaderToggleButton() {
                 tooltipElement.style.transformOrigin = 'left center';
             }
 
-            tooltipElement.style.background = '#EEEEEE';
-            tooltipElement.style.color = '#0A0A0A';
+            const isDark = document.body?.classList.contains('dark') || document.documentElement.classList.contains('dark');
+            if (isDark) {
+                tooltipElement.style.background = '#EEEEEE';
+                tooltipElement.style.color = '#0A0A0A';
+            } else {
+                tooltipElement.style.background = 'var(--WDS-surface-inverse, #EEEEEE)';
+                tooltipElement.style.color = 'var(--WDS-content-inverse, #0A0A0A)';
+            }
             tooltipElement.style.boxShadow = '0 0 20px rgba(0,0,0,0.2), 0 1px rgba(0,0,0,0.04)';
             tooltipElement.style.transform = 'translateY(-50%) scale(1)';
             tooltipElement.style.opacity = '1';
