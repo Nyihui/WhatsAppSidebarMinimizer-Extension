@@ -15,14 +15,6 @@
 }
 
 
-/* --- Disable Transitions for Toggle Button to Prevent Fading/Flashing --- */
-#wa-sidebar-toggle-btn,
-#wa-sidebar-toggle-btn *,
-#wa-sidebar-toggle-btn-wrapper,
-#wa-sidebar-toggle-btn-wrapper * {
-    transition: none !important;
-}
-
 #wa-sidebar-toggle-btn {
     background: transparent !important;
 }
@@ -33,4 +25,9 @@
 
 .dark #wa-sidebar-toggle-btn:hover {
     background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)) rgba(255, 255, 255, 0.1) !important;
+}
+
+#wa-sidebar-toggle-btn:active {
+    transform: scale(0.85) !important;
+    opacity: 0.6 !important;
 }
