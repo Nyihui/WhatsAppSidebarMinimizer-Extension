@@ -169,17 +169,10 @@ function injectNativeHeaderToggleButton() {
 
 // Global observer to catch initial load
 const observer = new MutationObserver(() => {
-    if (injectNativeHeaderToggleButton()) {
-        // Disconnect global observer once button is injected to save CPU/Memory
-        observer.disconnect();
-
-        // Setup a lightweight fallback check just in case WhatsApp completely rebuilds the header
-        setInterval(() => {
-            if (!document.body.contains(buttonElement)) {
-                injectNativeHeaderToggleButton();
-            }
-        }, 2000);
+    if (buttonElement && document.body.contains(buttonElement)) {
+        return;
     }
+    injectNativeHeaderToggleButton();
 });
 
 function init() {
