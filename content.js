@@ -33,8 +33,15 @@ function getExpandSvg() {
     </svg>`;
 }
 
+function updateChatsSelectedClass() {
+    const selector = '[data-testid="chatlist-header"] [data-testid="navbar-primary-section"] > div > div:first-child button[data-navbar-item-selected="true"]';
+    const isSelected = document.querySelector(selector) !== null;
+    document.documentElement.classList.toggle('wa-chat-chats-selected', isSelected);
+}
+
 function applyState(minimized) {
     document.documentElement.classList.toggle('wa-chat-minimized', minimized);
+    updateChatsSelectedClass();
     if (buttonElement) {
         const minSvg = buttonElement.querySelector('#wa-min-svg');
         const expSvg = buttonElement.querySelector('#wa-exp-svg');
@@ -66,6 +73,42 @@ function createTooltip() {
         'transition:transform 0 cubic-bezier(0.4, 0, 0.2, 1), opacity 0 cubic-bezier(0.4, 0, 0.2, 1)', 'font-family:inherit'
     ].join(';');
     document.body.appendChild(tooltipElement);
+}
+
+function showTooltipForElement(element, text) {
+    createTooltip();
+    tooltipElement.textContent = text;
+    const rect = element.getBoundingClientRect();
+    tooltipElement.style.top = `${rect.top + rect.height / 2}px`;
+
+    if (isRTL) {
+        tooltipElement.style.left = 'auto';
+        tooltipElement.style.right = `${window.innerWidth - rect.left + 5}px`;
+        tooltipElement.style.transformOrigin = 'right center';
+    } else {
+        tooltipElement.style.right = 'auto';
+        tooltipElement.style.left = `${rect.right + 5}px`;
+        tooltipElement.style.transformOrigin = 'left center';
+    }
+
+    const isDark = document.body?.classList.contains('dark') || document.documentElement.classList.contains('dark');
+    if (isDark) {
+        tooltipElement.style.background = '#EEEEEE';
+        tooltipElement.style.color = '#0A0A0A';
+    } else {
+        tooltipElement.style.background = 'var(--WDS-surface-inverse, #EEEEEE)';
+        tooltipElement.style.color = 'var(--WDS-content-inverse, #0A0A0A)';
+    }
+    tooltipElement.style.boxShadow = '0 0 20px rgba(0,0,0,0.2), 0 1px rgba(0,0,0,0.04)';
+    tooltipElement.style.transform = 'translateY(-50%) scale(1)';
+    tooltipElement.style.opacity = '1';
+}
+
+function hideTooltip() {
+    if (tooltipElement) {
+        tooltipElement.style.transform = 'translateY(-50%) scale(0.95)';
+        tooltipElement.style.opacity = '0';
+    }
 }
 
 function injectNativeHeaderToggleButton() {
@@ -120,42 +163,16 @@ function injectNativeHeaderToggleButton() {
         buttonElement.appendChild(expSvg);
 
         buttonElement.addEventListener('mouseenter', () => {
-            tooltipElement.textContent = isMinimized ? 'Expand Sidebar' : 'Minimize Sidebar';
-            const rect = buttonElement.getBoundingClientRect();
-            tooltipElement.style.top = `${rect.top + rect.height / 2}px`;
-
-            if (isRTL) {
-                tooltipElement.style.left = 'auto';
-                tooltipElement.style.right = `${window.innerWidth - rect.left + 5}px`;
-                tooltipElement.style.transformOrigin = 'right center';
-            } else {
-                tooltipElement.style.right = 'auto';
-                tooltipElement.style.left = `${rect.right + 5}px`;
-                tooltipElement.style.transformOrigin = 'left center';
-            }
-
-            const isDark = document.body?.classList.contains('dark') || document.documentElement.classList.contains('dark');
-            if (isDark) {
-                tooltipElement.style.background = '#EEEEEE';
-                tooltipElement.style.color = '#0A0A0A';
-            } else {
-                tooltipElement.style.background = 'var(--WDS-surface-inverse, #EEEEEE)';
-                tooltipElement.style.color = 'var(--WDS-content-inverse, #0A0A0A)';
-            }
-            tooltipElement.style.boxShadow = '0 0 20px rgba(0,0,0,0.2), 0 1px rgba(0,0,0,0.04)';
-            tooltipElement.style.transform = 'translateY(-50%) scale(1)';
-            tooltipElement.style.opacity = '1';
+            showTooltipForElement(buttonElement, isMinimized ? 'Expand Sidebar' : 'Minimize Sidebar');
         });
 
         buttonElement.addEventListener('mouseleave', () => {
-            tooltipElement.style.transform = 'translateY(-50%) scale(0.95)';
-            tooltipElement.style.opacity = '0';
+            hideTooltip();
         });
 
         buttonElement.addEventListener('click', (e) => {
             e.stopPropagation();
-            tooltipElement.style.transform = 'translateY(-50%) scale(0.95)';
-            tooltipElement.style.opacity = '0';
+            hideTooltip();
             toggleMinimizedState();
         });
     }
@@ -211,13 +228,46 @@ function init() {
             toggleMinimizedState();
         }
     });
+
+    // Update Chats selected tab class when user clicks on navigation tabs
+    document.addEventListener('click', () => {
+        setTimeout(updateChatsSelectedClass, 50);
+    });
+
+    // Global mouseover listener for chat list items and archived button when minimized
+    document.addEventListener('mouseover', (e) => {
+        if (!isMinimized || !document.documentElement.classList.contains('wa-chat-chats-selected')) return;
+        
+        const target = e.target.closest('[data-testid*="list-item-"], button[data-testid="chatlist-panel-archived-button"]');
+        if (!target) return;
+        
+        const titleEl = target.querySelector('[data-testid="cell-frame-title"]');
+        if (!titleEl) return;
+        
+        const titleText = titleEl.textContent.trim();
+        if (!titleText) return;
+        
+        showTooltipForElement(target, titleText);
+    });
+
+    document.addEventListener('mouseout', (e) => {
+        if (!isMinimized || !document.documentElement.classList.contains('wa-chat-chats-selected')) return;
+        const target = e.target.closest('[data-testid*="list-item-"], button[data-testid="chatlist-panel-archived-button"]');
+        if (!target) return;
+        
+        if (e.relatedTarget && e.relatedTarget.closest('[data-testid*="list-item-"], button[data-testid="chatlist-panel-archived-button"]') === target) {
+            return;
+        }
+        
+        hideTooltip();
+    });
 }
 
 // --- Custom Pipeline Engine (Replaces CSS :has) ---
 const MINIMIZER_TARGETS = [
     // 'div[id="side"] | closest:div',
     // 'div[data-testid="drawer-left"]'
-    'div | has:> header[data-testid="chatlist-header"] | has:> div[id="side"]',
+    'div | has:> [data-testid="chatlist-header"]:not([tabindex="0"])',
     'div[data-testid="drawer-left"]'
 ];
 
@@ -279,6 +329,11 @@ function applyJsTargets() {
             if (!el.classList.contains('wa-js-target-minimizer')) {
                 el.classList.add('wa-js-target-minimizer');
             }
+            if (targetStr.includes('chatlist-header')) {
+                if (!el.classList.contains('wa-js-target-minimizer-custom')) {
+                    el.classList.add('wa-js-target-minimizer-custom');
+                }
+            }
         });
     });
 }
@@ -296,6 +351,7 @@ const targetObserver = new MutationObserver((mutations) => {
     const hasElementChanges = mutations.some(m => m.addedNodes.length > 0 || m.removedNodes.length > 0);
     if (hasElementChanges) {
         applyJsTargetsDebounced();
+        updateChatsSelectedClass();
     }
 });
 

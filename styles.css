@@ -6,13 +6,148 @@
 }
 
 /* --- Hide Native Sidebar Panel when Minimized --- */
-.wa-chat-minimized .wa-js-target-minimizer {
+.wa-chat-minimized .wa-js-target-minimizer:not(.wa-js-target-minimizer-custom),
+.wa-chat-minimized:not(.wa-chat-chats-selected) .wa-js-target-minimizer-custom {
     border-inline-start-width: 0 !important;
     width: 0 !important;
     min-width: 0 !important;
     flex: 0 0 0 !important;
     overflow: hidden !important;
 }
+
+/* --- Minimized Mode for Chat List Header Container --- */
+.wa-chat-minimized.wa-chat-chats-selected .wa-js-target-minimizer-custom {
+    width: 100px !important;
+    min-width: 100px !important;
+    flex: 0 0 100px !important;
+}
+
+/* - [data-testid="chatlist-header"]:not([tabindex="0"]) | Add property 'display: none' */
+.wa-chat-minimized.wa-chat-chats-selected [data-testid="chatlist-header"]:not([tabindex="0"]) {
+    display: none !important;
+}
+
+/* - [id="side"] [data-testid="chat-list-search-container"] | Add property 'display: none' */
+.wa-chat-minimized.wa-chat-chats-selected [id="side"] [data-testid="chat-list-search-container"] {
+    display: none !important;
+}
+
+/* - [id="side"] div | has:> [data-testid="filter-button"] | Add property 'display: none' */
+.wa-chat-minimized.wa-chat-chats-selected [id="side"] div:has(> [data-testid="filter-button"]) {
+    display: none !important;
+}
+
+/* - [id="side"] [data-testid="chat-butterbar"] | Add property 'display: none' */
+.wa-chat-minimized.wa-chat-chats-selected [id="side"] [data-testid="chat-butterbar"] {
+    display: none !important;
+}
+
+/* - Add new div as first-child on parent '[id="side"] [id="pane-side"]' with 'padding: 10px' */
+.wa-chat-minimized.wa-chat-chats-selected [id="side"] [id="pane-side"]::before {
+    content: "";
+    display: block;
+    padding: 10px;
+}
+
+/* - [id="side"] [id="pane-side"] > button[data-testid="chatlist-panel-archived-button"] | Add property 'width: 100px !important' */
+.wa-chat-minimized.wa-chat-chats-selected [id="side"] [id="pane-side"]>button[data-testid="chatlist-panel-archived-button"] {
+    width: 100px !important;
+}
+
+/* - [id="side"] [id="pane-side"] > button[data-testid="chatlist-panel-archived-button"] > [data-testid="cell-frame-container"] > div:first-child > div:first-child | Add property 'padding-inline: 15px !important' */
+.wa-chat-minimized.wa-chat-chats-selected [id="side"] [id="pane-side"]>button[data-testid="chatlist-panel-archived-button"]>[data-testid="cell-frame-container"]>div:first-child>div:first-child {
+    padding-inline: 15px !important;
+}
+
+/* - [id="side"] [id="pane-side"] > button[data-testid="chatlist-panel-archived-button"] > [data-testid="cell-frame-container"] > div:not(:first-child) | Add property 'display: none' */
+.wa-chat-minimized.wa-chat-chats-selected [id="side"] [id="pane-side"]>button[data-testid="chatlist-panel-archived-button"]>[data-testid="cell-frame-container"]>div:not(:first-child) {
+    display: none !important;
+}
+
+/* - [id="side"] [id="pane-side"] [data-testid="chat-list"] [data-testid*="list-item-"] | Add property 'width: 100px !important' */
+.wa-chat-minimized.wa-chat-chats-selected [id="side"] [id="pane-side"] [data-testid="chat-list"] [data-testid*="list-item-"] {
+    width: 100px !important;
+}
+
+/* - [id="side"] [id="pane-side"] [data-testid="chat-list"] [data-testid*="list-item-"] [data-testid="message-yourself-row"] > div:first-child > div:first-child | Add property 'padding-inline: 15px !important' */
+.wa-chat-minimized.wa-chat-chats-selected [id="side"] [id="pane-side"] [data-testid="chat-list"] [data-testid*="list-item-"] [data-testid="message-yourself-row"]>div:first-child>div:first-child {
+    padding-inline: 15px !important;
+}
+
+/* - [id="side"] [id="pane-side"] [data-testid="chat-list"] [data-testid*="list-item-"] [data-testid="message-yourself-row"] > div:not(:first-child) | Add property 'display: none' */
+.wa-chat-minimized.wa-chat-chats-selected [id="side"] [id="pane-side"] [data-testid="chat-list"] [data-testid*="list-item-"] [data-testid="message-yourself-row"]>div:not(:first-child) {
+    display: none !important;
+}
+
+/* - [id="side"] [id="pane-side"] [data-testid="chat-list"] [data-testid*="list-item-"] [data-testid="cell-frame-container"] > div:first-child > div:first-child | Add property 'padding-inline: 15px !important' */
+.wa-chat-minimized.wa-chat-chats-selected [id="side"] [id="pane-side"] [data-testid="chat-list"] [data-testid*="list-item-"] [data-testid="cell-frame-container"]>div:first-child>div:first-child {
+    padding-inline: 15px !important;
+}
+
+/* - [id="side"] [id="pane-side"] [data-testid="chat-list"] [data-testid*="list-item-"] [data-testid="cell-frame-container"] > div:not(:first-child) | Add property 'display: none' */
+.wa-chat-minimized.wa-chat-chats-selected [id="side"] [id="pane-side"] [data-testid="chat-list"] [data-testid*="list-item-"] [data-testid="cell-frame-container"]>div:not(:first-child) {
+    display: none !important;
+}
+
+/* - [id="side"] [id="pane-side"] > [data-testid="chatlist-e2e-message"] | Add property 'display: none' */
+.wa-chat-minimized.wa-chat-chats-selected [id="side"] [id="pane-side"] > [data-testid="chatlist-e2e-message"] {
+    display: none !important;
+}
+
+
+/* --- Minimized Mode for Left Drawer --- */
+.wa-chat-minimized.wa-chat-chats-selected [data-testid="drawer-left"] {
+    width: 100px !important;
+    min-width: 100px !important;
+    flex: 0 0 100px !important;
+}
+
+/* - [data-testid="drawer-left"] header:has([data-testid="drawer-title-body"]) | Add property 'width: 100px !important' & 'padding-bottom: 0px !important' */
+.wa-chat-minimized.wa-chat-chats-selected [data-testid="drawer-left"] header:has([data-testid="drawer-title-body"]) {
+    width: 100px !important;
+    padding-bottom: 0px !important;
+}
+
+/* - [data-testid="drawer-left"] header:has([data-testid="drawer-title-body"]) > div:first-child | Add property 'justify-content: center' */
+.wa-chat-minimized.wa-chat-chats-selected [data-testid="drawer-left"] header:has([data-testid="drawer-title-body"]) > div:first-child {
+    justify-content: center !important;
+}
+
+/* - [data-testid="drawer-left"] header [data-testid="drawer-title-body"] | Add property 'display: none' */
+.wa-chat-minimized.wa-chat-chats-selected [data-testid="drawer-left"] header [data-testid="drawer-title-body"] {
+    display: none !important;
+}
+
+/* - [data-testid="drawer-left"] div | has:> header | find:> div > div > div:first-child | Add property 'display: none' */
+.wa-chat-minimized.wa-chat-chats-selected [data-testid="drawer-left"] div:has(> header) > div > div > div:first-child {
+    display: none !important;
+}
+
+/* - [data-testid="drawer-left"] div | has:> header | [data-testid="archived-chatlist"] [data-testid*="list-item-"] | Add property 'width: 100px !important' */
+.wa-chat-minimized.wa-chat-chats-selected [data-testid="drawer-left"] div:has(> header) [data-testid="archived-chatlist"] [data-testid*="list-item-"] {
+    width: 100px !important;
+}
+
+/* - [data-testid="drawer-left"] div | has:> header | [data-testid="archived-chatlist"] [data-testid*="list-item-"] [data-testid="message-yourself-row"] > div:first-child > div:first-child | Add property 'padding-inline: 15px !important' */
+.wa-chat-minimized.wa-chat-chats-selected [data-testid="drawer-left"] div:has(> header) [data-testid="archived-chatlist"] [data-testid*="list-item-"] [data-testid="message-yourself-row"] > div:first-child > div:first-child {
+    padding-inline: 15px !important;
+}
+
+/* - [data-testid="drawer-left"] div | has:> header | [data-testid="archived-chatlist"] [data-testid*="list-item-"] [data-testid="message-yourself-row"] > div:not(:first-child) | Add property 'display: none' */
+.wa-chat-minimized.wa-chat-chats-selected [data-testid="drawer-left"] div:has(> header) [data-testid="archived-chatlist"] [data-testid*="list-item-"] [data-testid="message-yourself-row"] > div:not(:first-child) {
+    display: none !important;
+}
+
+/* - [data-testid="drawer-left"] div | has:> header | [data-testid="archived-chatlist"] [data-testid*="list-item-"] [data-testid="cell-frame-container"] > div:first-child > div:first-child | Add property 'padding-inline: 15px !important' */
+.wa-chat-minimized.wa-chat-chats-selected [data-testid="drawer-left"] div:has(> header) [data-testid="archived-chatlist"] [data-testid*="list-item-"] [data-testid="cell-frame-container"] > div:first-child > div:first-child {
+    padding-inline: 15px !important;
+}
+
+/* - [data-testid="drawer-left"] div | has:> header | [data-testid="archived-chatlist"] [data-testid*="list-item-"] [data-testid="cell-frame-container"] > div:not(:first-child) | Add property 'display: none' */
+.wa-chat-minimized.wa-chat-chats-selected [data-testid="drawer-left"] div:has(> header) [data-testid="archived-chatlist"] [data-testid*="list-item-"] [data-testid="cell-frame-container"] > div:not(:first-child) {
+    display: none !important;
+}
+
 
 
 #wa-sidebar-toggle-btn {
