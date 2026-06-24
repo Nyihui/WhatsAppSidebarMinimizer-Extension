@@ -33,7 +33,7 @@
 }
 
 /* - [id="side"] div | has:> [data-testid="filter-button"] | Add property 'display: none' */
-.wa-chat-minimized.wa-chat-chats-selected [id="side"] div:has(> [data-testid="filter-button"]) {
+.wa-chat-minimized.wa-chat-chats-selected [id="side"] div:has(> [data-testid="filter-button"], [id="new-filter"]) {
     display: none !important;
 }
 
@@ -90,7 +90,7 @@
 }
 
 /* - [id="side"] [id="pane-side"] > [data-testid="chatlist-e2e-message"] | Add property 'display: none' */
-.wa-chat-minimized.wa-chat-chats-selected [id="side"] [id="pane-side"] > [data-testid="chatlist-e2e-message"] {
+.wa-chat-minimized.wa-chat-chats-selected [id="side"] [id="pane-side"]>[data-testid="chatlist-e2e-message"] {
     display: none !important;
 }
 
@@ -109,7 +109,7 @@
 }
 
 /* - [data-testid="drawer-left"] header:has([data-testid="drawer-title-body"]) > div:first-child | Add property 'justify-content: center' */
-.wa-chat-minimized.wa-chat-chats-selected [data-testid="drawer-left"] header:has([data-testid="drawer-title-body"]) > div:first-child {
+.wa-chat-minimized.wa-chat-chats-selected [data-testid="drawer-left"] header:has([data-testid="drawer-title-body"])>div:first-child {
     justify-content: center !important;
 }
 
@@ -119,7 +119,7 @@
 }
 
 /* - [data-testid="drawer-left"] div | has:> header | find:> div > div > div:first-child | Add property 'display: none' */
-.wa-chat-minimized.wa-chat-chats-selected [data-testid="drawer-left"] div:has(> header) > div > div > div:first-child {
+.wa-chat-minimized.wa-chat-chats-selected [data-testid="drawer-left"] div:has(> header)>div>div>div:first-child {
     display: none !important;
 }
 
@@ -129,22 +129,22 @@
 }
 
 /* - [data-testid="drawer-left"] div | has:> header | [data-testid="archived-chatlist"] [data-testid*="list-item-"] [data-testid="message-yourself-row"] > div:first-child > div:first-child | Add property 'padding-inline: 15px !important' */
-.wa-chat-minimized.wa-chat-chats-selected [data-testid="drawer-left"] div:has(> header) [data-testid="archived-chatlist"] [data-testid*="list-item-"] [data-testid="message-yourself-row"] > div:first-child > div:first-child {
+.wa-chat-minimized.wa-chat-chats-selected [data-testid="drawer-left"] div:has(> header) [data-testid="archived-chatlist"] [data-testid*="list-item-"] [data-testid="message-yourself-row"]>div:first-child>div:first-child {
     padding-inline: 15px !important;
 }
 
 /* - [data-testid="drawer-left"] div | has:> header | [data-testid="archived-chatlist"] [data-testid*="list-item-"] [data-testid="message-yourself-row"] > div:not(:first-child) | Add property 'display: none' */
-.wa-chat-minimized.wa-chat-chats-selected [data-testid="drawer-left"] div:has(> header) [data-testid="archived-chatlist"] [data-testid*="list-item-"] [data-testid="message-yourself-row"] > div:not(:first-child) {
+.wa-chat-minimized.wa-chat-chats-selected [data-testid="drawer-left"] div:has(> header) [data-testid="archived-chatlist"] [data-testid*="list-item-"] [data-testid="message-yourself-row"]>div:not(:first-child) {
     display: none !important;
 }
 
 /* - [data-testid="drawer-left"] div | has:> header | [data-testid="archived-chatlist"] [data-testid*="list-item-"] [data-testid="cell-frame-container"] > div:first-child > div:first-child | Add property 'padding-inline: 15px !important' */
-.wa-chat-minimized.wa-chat-chats-selected [data-testid="drawer-left"] div:has(> header) [data-testid="archived-chatlist"] [data-testid*="list-item-"] [data-testid="cell-frame-container"] > div:first-child > div:first-child {
+.wa-chat-minimized.wa-chat-chats-selected [data-testid="drawer-left"] div:has(> header) [data-testid="archived-chatlist"] [data-testid*="list-item-"] [data-testid="cell-frame-container"]>div:first-child>div:first-child {
     padding-inline: 15px !important;
 }
 
 /* - [data-testid="drawer-left"] div | has:> header | [data-testid="archived-chatlist"] [data-testid*="list-item-"] [data-testid="cell-frame-container"] > div:not(:first-child) | Add property 'display: none' */
-.wa-chat-minimized.wa-chat-chats-selected [data-testid="drawer-left"] div:has(> header) [data-testid="archived-chatlist"] [data-testid*="list-item-"] [data-testid="cell-frame-container"] > div:not(:first-child) {
+.wa-chat-minimized.wa-chat-chats-selected [data-testid="drawer-left"] div:has(> header) [data-testid="archived-chatlist"] [data-testid*="list-item-"] [data-testid="cell-frame-container"]>div:not(:first-child) {
     display: none !important;
 }
 
